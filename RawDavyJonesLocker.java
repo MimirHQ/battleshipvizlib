@@ -64,14 +64,10 @@ public class DavyJonesLocker {
 		List<JSONObject> ships = new ArrayList<JSONObject>();
 		for(Ship ship : game.getAllSpawnedShips(arena)) {
 			JSONObject shipData = shipToJSON(ship, game);
-			if (shipData.get("team") != null){
-				if (shipData.get("team").equals("player")) {
+			if (ship.getTeam() != null){
+				if (ship.getTeam().equals("player")) {
 					shipData.put("color", "#357df2");
-				} else {
-					shipData.put("color", "#19191c");
 				}
-			} else {
-				shipData.put("color", "#19191c");
 			}
 			ships.add(shipData);
 		}
@@ -92,6 +88,17 @@ public class DavyJonesLocker {
 		s.put("firepower", ship.getFirepower());
 		s.put("speed", ship.getSpeed());
 		s.put("range", ship.getRange());
+		try {
+			String color = ship.getColor();
+			if (color != null) {
+				s.put("color", color);
+			} else {
+				s.put("color", "#19191c");
+			}
+		} catch (Exception e) {
+			// No getColor method, ignore
+			s.put("color", "#19191c");
+		}
 		return s;
 	}
 
